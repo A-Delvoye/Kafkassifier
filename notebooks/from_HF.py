@@ -1,4 +1,4 @@
-from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
+from transformers import pipeline
 import pickle
 import requests
 import io
@@ -12,10 +12,11 @@ classifier = pipeline("text-classification", model=model_name, tokenizer=model_n
 response = requests.get(f"https://huggingface.co/{model_name}/resolve/main/label_encoder.pkl")
 label_encoder = pickle.load(io.BytesIO(response.content))
 
-# Exemple d'utilisation
+# exemple :
 texts = [
     "A thrilling journey of magic and dragons.",
     "A love story set in the countryside.",
+    "Blending archaeology, ancient texts, and modern scholarship, this book brings to life the siege that inspired poets and shaped Greek identity. Meet the real Achilles, Hektor, and Agamemnon—and discover the political ambitions, economic motives, and cultural myths that fueled one of the most famous conflicts of the ancient world. A gripping retelling and critical analysis, The Fall of Troy explores where myth ends and history begins."
 ]
 
 for text in texts:
