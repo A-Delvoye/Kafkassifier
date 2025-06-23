@@ -1,12 +1,11 @@
 pandas
 matplotlib
-transformers 
-pickle
-io
-ntlk
+transformers
+nltk
 inflect
 torch
 accelerate
 matplotlib
 seaborn
 scikit-learn
+streamlit
