@@ -205,3 +205,8 @@ data/
 notebooks/book_genre_model/
 notebooks/results/
 .env
+results/
+checkpoints/
+*.pt
+*.bin
+*.safetensors
