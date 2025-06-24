@@ -213,3 +213,5 @@ checkpoints/
 *.pt
 *.bin
 *.safetensors
+book_genre_model/
+results/
