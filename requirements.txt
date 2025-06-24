@@ -1,2 +1,12 @@
 pandas
 matplotlib
+transformers 
+pickle
+io
+ntlk
+inflect
+torch
+accelerate
+matplotlib
+seaborn
+scikit-learn
