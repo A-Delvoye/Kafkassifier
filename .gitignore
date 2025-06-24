@@ -204,6 +204,8 @@ cython_debug/
 data/
 notebooks/book_genre_model/
 notebooks/results/
+**/book_genre_model/
+
 .env
 results/
 checkpoints/
