@@ -3,8 +3,8 @@ name: Ruff Lint Check
 on:
   pull_request:
     branches: [main, develop]  # only main branches
-  # push:
-  #   branches: [main, develop]  # opt
+  push:
+    branches: [main, develop]  # opt
 
 jobs:
   lint:
