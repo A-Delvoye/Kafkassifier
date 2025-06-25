@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
-import book_genre_model
-from transformers import AutoTokenizer , AutoModelForSequenceClassification
 import torch
+from pydantic import BaseModel
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+from fastapi import APIRouter
 
 router = APIRouter()
 

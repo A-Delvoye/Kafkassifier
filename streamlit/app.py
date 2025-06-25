@@ -1,11 +1,12 @@
-import streamlit as st
-import pickle
 import os
-from PIL import Image
-from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
+import pickle
+
 import altair as alt
 import pandas as pd
+from PIL import Image
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
+import streamlit as st
 
 # === Configuration de la page
 st.set_page_config(page_title="Book Genre Classifier", layout="centered")

@@ -1,0 +1,21 @@
+[tool.ruff]
+line-length = 110
+select = ["E", "F", "I"]  # E: erreurs pycodestyle, F: erreurs pyflakes, I: import sorting
+ignore = []
+
+exclude = [
+    ".venv",
+    "__pycache__",
+    "data",
+    "img",
+    "notebooks/book_genre_model",
+    "model/book_genre_model",
+    "model/results",
+    "notebooks/results",
+    "*.safetensors",
+    "*.bin",
+    "*.pt",
+    "*.json",
+    "*.pkl",
+    "*.ipynb",
+]
