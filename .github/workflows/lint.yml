@@ -27,4 +27,4 @@ jobs:
 
     - name: Run Ruff
       run: |
-        ruff . --fix # lint tout le projet
+        ruff check . --fix # lint tout le projet
