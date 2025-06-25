@@ -1,0 +1,11 @@
+pandas
+matplotlib
+transformers
+nltk
+inflect
+torch
+accelerate
+seaborn
+scikit-learn
+streamlit
+ruff
