@@ -6,10 +6,9 @@ from fastapi.openapi.utils import get_openapi
 
 app = FastAPI(title="fastapi")
 
-app.include_router(predict.router, tags=["predict"])
+app.include_router(predict.router, prefix="/predict", tags=["predict"])
 app.include_router(user.router, tags=["user"])
 app.include_router(auth.router, tags=["auth"])
-
 
 def custom_openapi():
     if app.openapi_schema:

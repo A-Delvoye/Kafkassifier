@@ -1,39 +1,45 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import jwt
-from core.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+from core.config import SECRET_KEY, ALGORITHM
 from models.user import User
-from fastapi import Depends, HTTPException, status, Security
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlmodel import Session, select
 from db.session import get_session
+from jose import JWTError, jwt
+from typing import Optional 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
-def get_user(
-    token: str = Security(oauth2_scheme),
-    session: Session = Depends(get_session)
+async def get_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_session)
 ) -> User:
-    payload = verify_token(token)
-    if payload is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token invalide ou expiré",
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(
+            token, SECRET_KEY, algorithms=[ALGORITHM]
         )
-    
-    username = payload.get("sub")
-    if username is None:
-        raise HTTPException(status_code=401, detail="Utilisateur non identifié")
+        username: str = payload.get("sub") 
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
 
-    user = session.exec(select(User).where(User.username == username)).first()
+    user = db.exec(select(User).where(User.username == username)).first()
     if user is None:
-        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
-
+        raise credentials_exception
     return user
 
-def create_access_token(data: dict) -> str:
-    # access_token = create_access_token({"sub": str(user.id)})
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    if expires_delta:
+        expire = datetime.now() + expires_delta
+    else:
+        expire = datetime.now() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -41,7 +47,7 @@ def create_access_token(data: dict) -> str:
 def verify_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        if "sub" not in payload:
+        if "sub" not in payload or "exp" not in payload:
             return None
         return payload
     except jwt.PyJWTError:

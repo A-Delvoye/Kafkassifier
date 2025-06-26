@@ -206,6 +206,9 @@ notebooks/book_genre_model/
 notebooks/results/
 **/book_genre_model/
 fastapi/book_genre_model/
+*.db
+book_genre_model
+.venv
 
 .env
 results/

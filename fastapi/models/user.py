@@ -8,7 +8,6 @@ class User(SQLModel, table=True):
     hashed_password: str
     is_active: bool = Field(default=True)
 
-
 class Prediction(SQLModel, table=True):
     prediction_id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="user.id")
