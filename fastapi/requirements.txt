@@ -3,3 +3,8 @@ transformers
 fastapi
 uvicorn
 torch
+sqlmodel
+dotenv
+pydantic[email]
+passlib
+PyJWT

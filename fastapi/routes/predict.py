@@ -3,6 +3,20 @@ from pydantic import BaseModel
 import book_genre_model
 from transformers import AutoTokenizer , AutoModelForSequenceClassification
 import torch
+from models.user import Prediction, User
+from sqlmodel import SQLModel, create_engine, Session
+from typing import Annotated
+from utils.jwt_handler import verify_token
+# from db.transaction import get_user
+from db.session import get_session
+from utils.jwt_handler import get_user
+
+
+DATABASE_URL = "sqlite:///./db.sqlite3"
+
+engine = create_engine(DATABASE_URL, echo=True)
+
+
 
 router = APIRouter()
 
@@ -37,10 +51,22 @@ def modelisation(output):
     return result.item()
 
 @router.post("/")
-async def predict(item : Item):
+async def predict(item: Item, current_user: User = Depends(get_user)):
+
     input = item.text
     encoded_input = tokenisation(input)
     modelisation_done = modelisation(encoded_input)
-    return {"genre": genre[modelisation_done]}
+    result = genre[modelisation_done]
+    create_prediction(current_user.id,input, result)
+    print(current_user.id)
+    return {"genre": result}
 
+
+def create_prediction(user_id, input, result):
+    pred1 = Prediction(user_id = user_id, summary=input,predicted_genre=result)
+
+
+    with Session(engine) as session :
+        session.add(pred1)
+        session.commit()
 
