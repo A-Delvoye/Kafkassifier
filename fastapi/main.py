@@ -1,13 +1,13 @@
 from fastapi import FastAPI
-from routes import predict, user, auth
+from routes import predict, auth
 from db.session import creation
-from models.user import User, Prediction
+# from models.user import User, Prediction
 from fastapi.openapi.utils import get_openapi
 
 app = FastAPI(title="fastapi")
 
 app.include_router(predict.router, prefix="/predict", tags=["predict"])
-app.include_router(user.router, tags=["user"])
+# app.include_router(user.router, tags=["user"])
 app.include_router(auth.router, tags=["auth"])
 
 def custom_openapi():
